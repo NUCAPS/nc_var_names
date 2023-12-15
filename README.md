@@ -1,5 +1,9 @@
 # NUCAPS-EDR netCDF file names and descriptions
-Provides a comprehensive list of NUCAPS-EDR v3.0 dimensions and variable names and description. For more detailed information on the NUCAPS algorithm, please read the [ATBD](https://www.star.nesdis.noaa.gov/jpss/documents/ATBD/ATBD_NUCAPS_v3.1.pdf) or contact the science team.
+Provides a comprehensive list of NUCAPS-EDR v3.0 dimensions and variable names and description. For a quick overview of the NUCAPS algorithm, see [this quick guide](https://weather.ndc.nasa.gov/nucaps/qg/NUCAPS-cloud-frac-quick-guide_final.pdf). For more detailed information on the NUCAPS algorithm, please read the ATBD or read some of the [foundational literature](https://weather.ndc.nasa.gov/nucaps/resources_publications.html) on NUCAPS. Contact the [NUCAPS science team](https://www.star.nesdis.noaa.gov/jpss/soundings.php) if you require further assistance. Note: There will be some additional fields added to NUCAPS v3.1, I have tried to document some of these below but keep in mind that the product will continuously improve and some information may become outdated here.
+
+NUCAPS is available on NOAA CLASS and via the NOAA NODD program via [Amazon AWS](https://registry.opendata.aws/noaa-jpss/). I recommend downloading a sample file and begin by printing the variables. You'll immediately see there are a lot! If you are new to NUCAPS, the most commonly used variables are the ones listed under "Geophysical Variables using the IR+MW retrieval," which includes both temperature, water vapor, and other trace gases. We also recommend pairing these with the Quality_Flag field to determine how much you should trust the measurement. I recommend using [this tutorial](https://github.com/NUCAPS/saharan-air-layer) as a starting point.
+
+For NUCAPS v3.0 and earlier, you will need to apply a surface correction to get the lowest value or filter all data below the Surface Pressure. See [Berndt et al., 2020](https://www.mdpi.com/2072-4292/12/20/3311) for an explanation and a [code example](https://github.com/NUCAPS/global_stability_params/blob/master/demo_files.py) lines 81-136 for a use case. Starting with NUCAPS-EDR v3.1, the surface correction will already be applied.
 
 Abbreviations
 * FOV: Field-of-view
@@ -12,83 +16,125 @@ Abbreviations
 * IASI: infrared atmospheric sounding interferometer
 * AMSU: Advanced Microwave Sounding Unit
 
-Variables:
- * CrIS_FORs: The collocated CrIS/ATMS field of regard number, an index ranges for 1-120.
- * Time: Time in UTC Milliseconds since Jan 1, 1970
- * Latitude: Retrieval latitude values for each CrIS field of regard (degrees North). Spans -90 to 90.
- * Longitude: Retrieval latitude values for each CrIS field of regard (degrees East). Spans -180 to 180.
- * View_Angle: View angle for each CrIS FOR. Spans -45 to 45, where 0 is nadir/directly overhead. 
- * Surface_Pressure: Surface pressure in hPa. This value is not retrieved by NUCAPS, it is derived from the GFS forecast surface pressure.
- * Skin_Temperature: The surface skin temperature at the top of the ground surface.
- * MIT_Skin_Temperature: Same as above, but the microwave-only retrieval.
- * FG_Skin_Temperature: Same as above, but the first guess.
- * Quality_Flag: Quality flags for retrieval. 0 indicates that the MW+IR passed, 1 indicates the MW-only passed, all other values indicate that the retrieval failed.
- * Topography: SUrface height in meters. This field is auxillery data, not retrieved by NUCAPS.
- * Land_Fraction: Land fraction ranging from 0 to 1. This field is auxillery data, not retrieved by NUCAPS.
- * Mean_CO2: Column averaged CO2 (ppm) per CrIS FOR
- * FG_Mean_CO2: First guess value for the column averaged CO2 (ppm) per CrIS FOR.
- * ncemis_Per_FOR: Number of cloud emissivity hinge points per CrIS FOR
- * nemis_Per_FOR: Number of surface emissivity hinge points per CrIS FOR
- * N_Smw_Per_FOR: Number of MW spectral points per CrIS FOR (13 for NOAA-20 EDR v3.0)
- * ncld_Per_FOR: Number of cloud layers per CrIS FOR, presently 2 layers. See Cloud_Top_Fraction and Cloud_Top_Pressure.
- * Solar_Zenith: Solar zenith angles for each CrIS FOR. Ranges from 0 to 180 degrees.
- * Satellite_Height: Satellite height above each CrIS FOR
- * Ascending_Descending: Flag that indicates if the scan is moving from south to north (ascending) or from north to south (decsending). The flags codes are 1=Descending, 0=Ascending.
- * MW_Surface_Class: Microwave surface class
- * MW_Surface_Emis: Microwave surface emissivity
- * Effective_Pressure: 100 pressure layer coordinates, to be used as the vertical coordinate with trace gases.
- * Pressure: 100 pressure level coordinates, to be used as the vertical coordinate with air temperature.
- * O3_MR: IR+MW ozone retrieval on 100 layers in mixing ratio units (ppbv).
- * FG_O3_MR: First guess to the ozone retrieval on 100 layers in mixing ratio units (ppbv).
- * O3: IR+MW ozone retrieval on 100 layers column density in units of molecules/cm2.
- * FG_O3: First guess to the ozone retrieval on 100 layers in units of molecules/cm2.
- * CO2: IR+MW carbon dioxide retrieval on 100 layers column density in units of molecules/cm2.
- * CO_MR: IR+MW carbon monoxide retrieval on 100 layers in mixing ratio units (ppbv).
- * CO: IR+MW carbon monoxide retrieval on 100 layers column density in units of molecules/cm2.
- * CH4_MR: IR+MW methane retrieval on 100 layers in mixing ratio units (ppbv).
- * CH4: IR+MW methane retrieval on 100 layers column density in units of molecules/cm2.
- * H2O_MR: IR+MW water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
- * MIT_H2O_MR: MW-only water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
- * FG_H2O_MR: First guess to the water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
- * H2O: MW+IR water vapor retrieval on 100 layer column density (molecules/cm2).
- * MIT_H2O: MW-only water vapor mixing ratio on 100 layers column density (molecules/cm2).
- * FG_H2O: First guess to the water vapor mixing ratio on 100 layers column density (molecules/cm2).
- * Temperature: MW+IR air temperature retrieval on 100 levels in units Kelvin.
- * MIT_Temperature: MW-only air temperature retrieval on 100 levels in units Kelvin.
- * FG_Temperature: First guess to the air temperature retrieval on 100 levels in units Kelvin.
- * N2O_MR: MR+IR Nitrous Oxide mixing ratio (ppbv)
- * N2O: MR+IR Nitrous Oxide layer column density (molecules/cm2)
- * HNO3_MR: Nitric Acid mixing ratio (ppbv)
- * HNO3: Nitric Acid layer column density (molecules/cm2)
- * SO2_MR: Sulfur Dioxide mixing ratio (ppbv)
- * SO2: Sulfur Dioxide layer column density (molecules/cm2)
- * Ice_Liquid_Flag: Indicates if liquid ice is present. The flag codes are 0=water and 1=ice.
- * Liquid_H2O: Liquid water layer column density (molecules/cm2)
- * Liquid_H2O_MR: Cloud liquid water layer in mixing ratio (kg/kg)
- * Cloud_Top_Fraction: Fraction of clouds on multiple layers, expressed from 0 (cloud free) to 1 (fully cloudy). Algorithm presently supports two layers, although the variable has 8 fields. Unused fields have a fill value (-9999.0). The smaller index is the value
- * Cloud_Top_Pressure: Same as Cloud_Top_Fraction, but for pressure level of clouds on multiple layers.
- * Stability: Atmospheric stability parameters
-    Stability( 1): Convective Available Potential Energy (CAPE) in joules per kilogram 
-    Stability( 2): Convective Inhibition (CIN) in joules per kilogram 
-    Stability( 3): Pressure (hPa) at Lifting Condensation Level (LCL) 
-    Stability( 4): Pressure (hPa) at Equilibrium Layer (EL) 
-    Stability( 5): Pressure (hPA) at Level of Free Convection (LFC)
-    Stability( 6): Temperature (K) at Lifting Condensation Level (LCL) 
-    Stability( 7): Temperature (K) at Level of Free Convection (LFC)
-    Stability( 8): Potential Temperature (Tpot)
-    Stability( 9): Equivalent Temperature (Teqiv)
-    Stability(10): Lifting Index (LI)
- * IR_Emis_Freq
- * FG_IR_Emis_Freq
- * IR_Surface_Emis
- * FG_IR_Surface_Emis
- * IR_Surface_Refl
- * MW_Emis
- * MIT_MW_Emis
- * MW_Frequency
- * Cloud_Emis: Cloud IR emissivity
- * Cloud_Freq: Cloud IR frequencies
- * Cloud_Refl: Cloud IR reflectivity
+Location, Geometry, and Geography Variables
+* CrIS_FORs: The collocated CrIS/ATMS field of regard number, an index ranges for 1-120.
+* Time: Time in UTC Milliseconds since Jan 1, 1970
+* Latitude: Retrieval latitude values for each CrIS field of regard (degrees North). Spans -90 to 90.
+* Longitude: Retrieval latitude values for each CrIS field of regard (degrees East). Spans -180 to 180.
+* Surface_Pressure: Surface pressure in hPa. This value is not retrieved by NUCAPS, it is derived from the GFS forecast surface pressure.
+* Topography: SUrface height in meters. This field is auxillery data, not retrieved by NUCAPS.
+* Land_Fraction: Land fraction ranging from 0 to 1. This field is auxillery data, not retrieved by NUCAPS.
+* View_Angle: View angle for each CrIS FOR. Spans -45 to 45, where 0 is nadir/directly overhead.
+* Solar_Zenith: Solar zenith angles for each CrIS FOR. Ranges from 0 to 180 degrees.
+* Satellite_Height: Satellite height above each CrIS FOR
+* Ascending_Descending: Flag that indicates if the scan is moving from south to north (ascending) or from north to south (decsending). The flags codes are 1=Descending, 0=Ascending.
+
+Vertical Pressure Coordinates
+* Effective_Pressure: 100 pressure layer coordinates, to be used as the vertical coordinate with trace gases.
+* Pressure: 100 pressure level coordinates, to be used as the vertical coordinate with air temperature.
+
+Quality Variables
+* Quality_Flag: Quality flags for retrieval. 0 indicates that the MW+IR passed, 1 indicates the MW-only passed, all other values indicate that the retrieval failed.
+
+Geophysical Variables using the IR+MW retrieval
+* Temperature: MW+IR air temperature retrieval on 100 levels in units Kelvin.
+* H2O_MR: IR+MW water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
+* H2O: MW+IR water vapor retrieval on 100 layer column density (molecules/cm2).
+* Liquid_H2O_MR: Cloud liquid water layer in mixing ratio (kg/kg)
+* Skin_Temperature: The surface skin temperature at the top of the ground surface.
+* O3: IR+MW ozone retrieval on 100 layers column density in units of molecules/cm2.
+* O3_MR: IR+MW ozone retrieval on 100 layers in mixing ratio units (ppbv).
+* CO_MR: IR+MW carbon monoxide retrieval on 100 layers in mixing ratio units (ppbv).
+* CO: IR+MW carbon monoxide retrieval on 100 layers column density in units of molecules/cm2.
+* CH4_MR: IR+MW methane retrieval on 100 layers in mixing ratio units (ppbv).
+* CH4: IR+MW methane retrieval on 100 layers column density in units of molecules/cm2.
+* N2O_MR: MR+IR Nitrous Oxide mixing ratio (ppbv)
+* N2O: MR+IR Nitrous Oxide layer column density (molecules/cm2)
+* HNO3_MR: Nitric Acid mixing ratio (ppbv)
+* HNO3: Nitric Acid layer column density (molecules/cm2)
+* SO2_MR: Sulfur Dioxide mixing ratio (ppbv)
+* SO2: Sulfur Dioxide layer column density (molecules/cm2)
+* CO2: IR+MW carbon dioxide retrieval on 100 layers column density in units of molecules/cm2.
+* Mean_CO2: Column averaged CO2 (ppm) per CrIS FOR* Liquid_H2O: Liquid water layer column density (molecules/cm2)
+
+Geophysical Variables using the Microwave-Only Retrieval
+* MIT_Temperature: MW-only air temperature retrieval on 100 levels in units Kelvin.
+* MIT_H2O_MR: MW-only water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
+* MIT_H2O: MW-only water vapor mixing ratio on 100 layers column density (molecules/cm2).
+* MIT_Skin_Temperature: Same as above, but the microwave-only retrieval.
+* MIT_MW_Emis: Microwave emissivity from MIT retrieval
+* MW_Emis: Microwave emissivity
+* MW_Frequency: Microwave emissivity
+* MW_Surface_Class: Microwave surface class
+* MW_Surface_Emis: Microwave surface emissivity
+
+First Guess Values for the Retrieval: Below are the first guess values that are in the file. Some additional context on FG values can be found in [this repository](https://github.com/NUCAPS/first_guess).
+* FG_Temperature: First guess to the air temperature retrieval on 100 levels in units Kelvin.
+* FG_H2O_MR: First guess to the water vapor mixing ratio on 100 layers in mixing ratio units (kg/kg).
+* FG_H2O: First guess to the water vapor mixing ratio on 100 layers column density (molecules/cm2).
+* FG_Skin_Temperature: Same as above, but the first guess.
+* FG_O3_MR: First guess to the ozone retrieval on 100 layers in mixing ratio units (ppbv).
+* FG_O3: First guess to the ozone retrieval on 100 layers in units of molecules/cm2.
+* FG_Mean_CO2: First guess value for the column averaged CO2 (ppm) per CrIS FOR.
+
+Cloud Retrievals: NUCAPS produces a cloud top pressure and fraction retrieval for two cloud layers, which can be paired with the Quality_Flag (which provides horitontal quality control) to understand where in the column to most trust the data. The page 2 of [this quick guide](https://weather.ndc.nasa.gov/nucaps/qg/NUCAPS-cloud-frac-quick-guide_final.pdf) for more information.
+* Cloud_Top_Fraction: Fraction of clouds on multiple layers, expressed from 0 (cloud free) to 1 (fully cloudy). Algorithm presently supports two layers, although the variable has 8 fields. Unused fields have a fill value (-9999.0). The smaller index is the value
+* Cloud_Top_Pressure: Same as Cloud_Top_Fraction, but for pressure level of clouds on multiple layers.
+
+Averaging Kernels: Only for NUCAPS EDR v3.1 or greater. An example use case can be found in [this repository](https://github.com/NUCAPS/methane-ak-calculation).
+* Temperature_AK_Eff_Pressure
+* Temperature_AK
+* Temperature_Function_Index
+* Temperature_Function_Last_Index
+* Temperature_Bot_Eff_Pressure
+* H2O_AK
+* H2O_AK_Eff_Pressure
+* H2O_Function_Index
+* H2O_Function_Last_Index
+* H2O_Bot_Eff_Pressure
+* O3_AK
+* O3_AK_Eff_Pressure
+* O3_Function_Index
+* O3_Function_Last_Index
+* O3_Bot_Eff_Pressure
+* CO_AK
+* CO_AK_Eff_Pressure
+* CO_Function_Index
+* CO_Function_Last_Index
+* CO_Bot_Eff_Pressure
+* CH4_AK
+* CH4_AK_Eff_Pressure
+* CH4_Function_Index
+* CH4_Function_Last_Index
+* CH4_Bot_Eff_Pressure
+* CO2_AK
+* CO2_AK_Eff_Pressure
+* CO2_Function_Index
+* CO2_Function_Last_Index
+* CO2_Bot_Eff_Pressure
+* SO2_AK
+* SO2_AK_Eff_Pressure
+* SO2_Function_Index
+* SO2_Function_Last_Index
+* SO2_Bot_Eff_Pressure
+* HNO3_AK
+* HNO3_AK_Eff_Pressure
+* HNO3_Function_Index
+* HNO3_Function_Last_Index
+* HNO3_Bot_Eff_Pressure
+
+Stability Parameters: Only recommended for NUCAPS EDR v3.1 or greater,. which uses the same methodology as NSHARP/SHARPpy to compute stability.
+* Stability: Atmospheric stability parameters
+    * Stability( 1): Convective Available Potential Energy (CAPE) in joules per kilogram 
+    * Stability( 2): Convective Inhibition (CIN) in joules per kilogram 
+    * Stability( 3): Pressure (hPa) at Lifting Condensation Level (LCL) 
+    * Stability( 4): Pressure (hPa) at Equilibrium Layer (EL) 
+    * Stability( 5): Pressure (hPA) at Level of Free Convection (LFC)
+    * Stability( 6): Temperature (K) at Lifting Condensation Level (LCL) 
+    * Stability( 7): Temperature (K) at Level of Free Convection (LFC)
+    * Stability( 8): Potential Temperature (Tpot)
+    * Stability( 9): Equivalent Temperature (Teqiv)
+    * Stability(10): Lifting Index (LI)
 
 Dimensions:
 * Number_of_CrIS_FORs: Index value for the number of CrIS/ATMS field of regard. (120)
@@ -101,7 +147,20 @@ Dimensions:
 * Number_of_Rspares: Number of possible rspare fields. 262 available, but only 94 presently used.
 * Number_of_Cloud_Emis_Hinge_Pts: Index values for number of cloud emissivity trapezoid hinge points.
 
-Research-Only Variables: These fields are generally used for internal algorithm development and testing purposed. Please contact NUCAPS science team if you need detailed explaination. Below is a high-level description. NOTE: The indices below are assuming "base 1."
+Auxillery data: These fields are generally used for advanced research or internal algorithm development and testing purposed. Please contact NUCAPS science team if you need detailed explaination. Below is a high-level description. NOTE: Any indices below are assuming "base 1."
+* ncemis_Per_FOR: Number of cloud emissivity hinge points per CrIS FOR
+* nemis_Per_FOR: Number of surface emissivity hinge points per CrIS FOR
+* N_Smw_Per_FOR: Number of MW spectral points per CrIS FOR (13 for NOAA-20 EDR v3.0)
+* ncld_Per_FOR: Number of cloud layers per CrIS FOR, presently 2 layers. See Cloud_Top_Fraction and Cloud_Top_Pressure.
+* IR_Emis_Freq: IR emissivity hinge point frequencies
+* FG_IR_Emis_Freq: IR emissivity hinge point frequencies from the first guess
+* IR_Surface_Emis: IR surface emissivity
+* FG_IR_Surface_Emis: IR surface emissivity from the first guess
+* IR_Surface_Refl: IR surface reflectance
+* Ice_Liquid_Flag: Indicates if liquid ice is present. The flag codes are 0=water and 1=ice.
+* Cloud_Emis: Cloud IR emissivity
+* Cloud_Freq: Cloud IR frequencies
+* Cloud_Refl: Cloud IR reflectivity
 * Ispare_Field:
     * ispare(1) = 0=IR   1=MW
     * ispare(2) = 0=OK   ne 0 is the sum of bits defined by: 1=REJECTED by GSFC, 2=rejected by MIT,   (if testfgrej=T), 4=rejected by NOAA  (if testfgrej=T)
